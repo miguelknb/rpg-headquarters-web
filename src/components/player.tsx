@@ -9,20 +9,20 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { Formik } from "formik";
-import InputField from "../components/inputField";
+import { Form, Formik } from "formik";
+import {InputNumberField} from "../components/inputField";
+import Bar from "./bar";
 
 const Player: React.FC<any> = ({ player }) => {
-  const hp: number = (player.currentHealth / player.maxHealth) * 100;
   const me = {
     id: 2,
   };
-  const [health, setHealth] = useState(0);
+  const [health, setHealth] = useState(player.currentHealth);
+  const [inputType, setInputType] = useState('');
 
-  let healthPercentage: number = (health / 100) * 100;
+  let healthPercentage: number = (health / player.maxHealth) * 100;
+
   let ownsPlayer = true// me.id === player.id;
-
-  healthPercentage = 100 * Math.random()
 
   return (
     <Box
@@ -56,35 +56,53 @@ const Player: React.FC<any> = ({ player }) => {
       <Stack mt="2rem">
         <Box mt="1rem">
           <Formik
-            initialValues={{}}
-            onSubmit={(values) => {
-              console.log("heal");
+            initialValues={{type: "", value: 0}}
+            onSubmit={ async (values) => {
+              let finalHealth = health;
+              let response;
+              if( inputType === 'heal') {
+                finalHealth += Number(values.value);
+              }
+              if ( inputType === 'damage') {
+                finalHealth -= Number(values.value); 
+              }
+              setHealth(finalHealth);
               //const response = await register({username: values.username, password: values.password})
             }}
           >
             {({ values, handleChange, isSubmitting }) => (
+              <Form>
               <Stack direction="row" spacing="5" justifyContent="flex-start">
                 <Box alignContent="center" minWidth="15rem">
                   <Text>Vida</Text>
-                  <Progress
-                    hasStripe
-                    height="32px"
-                    colorScheme="red"
-                    value={health}
-                  />
+                  <Bar current={health} max={player.maxHealth} width={'14rem'} height={'4rem'} displayValue={true}/>
                 </Box>
-                <Box maxW="4rem">
-                  <Button onClick={() => setHealth(health + 10)}
-                    type="button"
-                    disabled={healthPercentage === 100 || !ownsPlayer}
+                <Box maxW="10rem" alignContent="center">
+                  <Button
+                    onClick={() => setInputType('heal')}
+                    type='submit'
+                    disabled={healthPercentage >= 100 || !ownsPlayer}
                     colorScheme="green"
                     isLoading={isSubmitting}
+                    width={'100px'}
                   >
                     Heal
                   </Button>
-                  <InputField name="heal" placeholder="heal" label="" />
+                  <InputNumberField name="value" placeholder="" label="" />
+                  <Button mt={2} 
+                    onClick={() => setInputType('damage')}
+                    type='submit'
+                    disabled={healthPercentage <= 0 || !ownsPlayer}
+                    colorScheme="red"
+                    isLoading={isSubmitting}
+                    width={'100px'}
+                  >
+                    Damage
+                  </Button>
+
                 </Box>
               </Stack>
+              </Form>
             )}
           </Formik>
         </Box>
