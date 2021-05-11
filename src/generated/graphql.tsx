@@ -22,32 +22,25 @@ export type FieldError = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createPlayer: Player;
-  updatePlayer?: Maybe<Player>;
-  deletePlayer: Scalars['Boolean'];
-  changeMaxHealth?: Maybe<Player>;
-  heal?: Maybe<Player>;
-  damage?: Maybe<Player>;
   register: UserResponse;
   login: UserResponse;
+  changeMaxHealth?: Maybe<User>;
+  heal?: Maybe<User>;
+  damage?: Maybe<User>;
+  healSanity?: Maybe<User>;
+  damageSanity?: Maybe<User>;
 };
 
 
-export type MutationCreatePlayerArgs = {
-  maxHealth: Scalars['Float'];
-  name: Scalars['String'];
+export type MutationRegisterArgs = {
+  password: Scalars['String'];
+  username: Scalars['String'];
 };
 
 
-export type MutationUpdatePlayerArgs = {
-  maxHealth?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  id: Scalars['Float'];
-};
-
-
-export type MutationDeletePlayerArgs = {
-  id: Scalars['Float'];
+export type MutationLoginArgs = {
+  password: Scalars['String'];
+  username: Scalars['String'];
 };
 
 
@@ -69,37 +62,20 @@ export type MutationDamageArgs = {
 };
 
 
-export type MutationRegisterArgs = {
-  password: Scalars['String'];
-  username: Scalars['String'];
+export type MutationHealSanityArgs = {
+  healSanity: Scalars['Float'];
+  id: Scalars['Float'];
 };
 
 
-export type MutationLoginArgs = {
-  password: Scalars['String'];
-  username: Scalars['String'];
-};
-
-export type Player = {
-  __typename?: 'Player';
-  id: Scalars['Int'];
-  name: Scalars['String'];
-  maxHealth: Scalars['Int'];
-  currentHealth: Scalars['Int'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+export type MutationDamageSanityArgs = {
+  dmgSanity: Scalars['Float'];
+  id: Scalars['Float'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  players: Array<Player>;
-  player?: Maybe<Player>;
   me?: Maybe<User>;
-};
-
-
-export type QueryPlayerArgs = {
-  id: Scalars['Int'];
 };
 
 export type User = {
@@ -108,6 +84,8 @@ export type User = {
   username: Scalars['String'];
   maxHealth: Scalars['Int'];
   currentHealth: Scalars['Int'];
+  maxSanity: Scalars['Int'];
+  currentSanity: Scalars['Int'];
   partyId: Scalars['Int'];
   imgUrl_sane_normal: Scalars['String'];
   imgUrl_sane_hurt: Scalars['String'];
@@ -125,6 +103,62 @@ export type UserResponse = {
   errors?: Maybe<Array<FieldError>>;
   user?: Maybe<User>;
 };
+
+export type DamageMutationVariables = Exact<{
+  id: Scalars['Float'];
+  dmgHealth: Scalars['Float'];
+}>;
+
+
+export type DamageMutation = (
+  { __typename?: 'Mutation' }
+  & { damage?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'maxHealth' | 'currentHealth'>
+  )> }
+);
+
+export type DamageSanityMutationVariables = Exact<{
+  id: Scalars['Float'];
+  dmgSanity: Scalars['Float'];
+}>;
+
+
+export type DamageSanityMutation = (
+  { __typename?: 'Mutation' }
+  & { damageSanity?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'maxSanity' | 'currentSanity'>
+  )> }
+);
+
+export type HealMutationVariables = Exact<{
+  id: Scalars['Float'];
+  healHealth: Scalars['Float'];
+}>;
+
+
+export type HealMutation = (
+  { __typename?: 'Mutation' }
+  & { heal?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'maxHealth' | 'currentHealth'>
+  )> }
+);
+
+export type HealSanityMutationVariables = Exact<{
+  id: Scalars['Float'];
+  healSanity: Scalars['Float'];
+}>;
+
+
+export type HealSanityMutation = (
+  { __typename?: 'Mutation' }
+  & { healSanity?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'maxSanity' | 'currentSanity'>
+  )> }
+);
 
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
@@ -173,11 +207,63 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'maxHealth' | 'currentHealth' | 'imgUrl_sane_normal' | 'imgUrl_sane_hurt' | 'imgUrl_sane_dying'>
+    & Pick<User, 'id' | 'username' | 'maxHealth' | 'currentHealth' | 'maxSanity' | 'currentSanity' | 'imgUrl_sane_normal' | 'imgUrl_sane_hurt' | 'imgUrl_sane_dying' | 'imgUrl_dead'>
   )> }
 );
 
 
+export const DamageDocument = gql`
+    mutation Damage($id: Float!, $dmgHealth: Float!) {
+  damage(id: $id, dmgHealth: $dmgHealth) {
+    id
+    maxHealth
+    currentHealth
+  }
+}
+    `;
+
+export function useDamageMutation() {
+  return Urql.useMutation<DamageMutation, DamageMutationVariables>(DamageDocument);
+};
+export const DamageSanityDocument = gql`
+    mutation DamageSanity($id: Float!, $dmgSanity: Float!) {
+  damageSanity(id: $id, dmgSanity: $dmgSanity) {
+    id
+    maxSanity
+    currentSanity
+  }
+}
+    `;
+
+export function useDamageSanityMutation() {
+  return Urql.useMutation<DamageSanityMutation, DamageSanityMutationVariables>(DamageSanityDocument);
+};
+export const HealDocument = gql`
+    mutation Heal($id: Float!, $healHealth: Float!) {
+  heal(id: $id, healHealth: $healHealth) {
+    id
+    maxHealth
+    currentHealth
+  }
+}
+    `;
+
+export function useHealMutation() {
+  return Urql.useMutation<HealMutation, HealMutationVariables>(HealDocument);
+};
+export const HealSanityDocument = gql`
+    mutation HealSanity($id: Float!, $healSanity: Float!) {
+  healSanity(id: $id, healSanity: $healSanity) {
+    id
+    maxSanity
+    currentSanity
+  }
+}
+    `;
+
+export function useHealSanityMutation() {
+  return Urql.useMutation<HealSanityMutation, HealSanityMutationVariables>(HealSanityDocument);
+};
 export const LoginDocument = gql`
     mutation Login($username: String!, $password: String!) {
   login(username: $username, password: $password) {
@@ -219,9 +305,12 @@ export const MeDocument = gql`
     username
     maxHealth
     currentHealth
+    maxSanity
+    currentSanity
     imgUrl_sane_normal
     imgUrl_sane_hurt
     imgUrl_sane_dying
+    imgUrl_dead
   }
 }
     `;

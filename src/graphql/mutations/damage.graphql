@@ -1,0 +1,7 @@
+mutation Damage($id: Float!, $dmgHealth: Float!){
+	damage(id: $id, dmgHealth: $dmgHealth) {
+    id
+    maxHealth
+    currentHealth
+  }
+}

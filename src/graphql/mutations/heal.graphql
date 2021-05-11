@@ -1,0 +1,7 @@
+mutation Heal($id: Float!, $healHealth: Float!){
+	heal(id: $id, healHealth: $healHealth) {
+        id
+        maxHealth
+        currentHealth
+  }
+}

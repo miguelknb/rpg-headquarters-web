@@ -1,0 +1,7 @@
+mutation HealSanity($id: Float!, $healSanity: Float!){
+	healSanity(id: $id, healSanity: $healSanity) {
+        id
+        maxSanity
+        currentSanity
+  }
+}

@@ -1,0 +1,7 @@
+mutation DamageSanity($id: Float!, $dmgSanity: Float!){
+	damageSanity(id: $id, dmgSanity: $dmgSanity) {
+        id
+        maxSanity
+        currentSanity
+  }
+}
