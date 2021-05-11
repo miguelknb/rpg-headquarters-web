@@ -1,0 +1,11 @@
+query Me {
+	me {
+		id
+    username
+    maxHealth
+    currentHealth
+    imgUrl_sane_normal
+    imgUrl_sane_hurt
+    imgUrl_sane_dying
+  }
+}

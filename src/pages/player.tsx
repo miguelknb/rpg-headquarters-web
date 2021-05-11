@@ -1,5 +1,9 @@
+import { Box,   Flex,   Text} from '@chakra-ui/react';
 import React from 'react'
 import PlayerCard from '../components/player'
+import { useMeQuery } from '../generated/graphql';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 
 const mockCharacter = {
     id: 3,
@@ -13,9 +17,24 @@ const mockCharacter = {
 
 const PlayerPage : React.FC<any> = ({}) => {
     
-    return (
-        <PlayerCard player={mockCharacter}/>
-    ) 
+    const [{ data, fetching }] = useMeQuery();
+
+    if (fetching) {
+        return (
+            <Flex alignItems={'center'}><Text>Loading...</Text></Flex>
+        )
+    }
+
+    if (data) {    
+        return (
+            <PlayerCard player={data.me}/>
+            ) 
+    }
+
+    else {
+        const router = useRouter()
+        router.push('/login')
+    }
 }
 
 export default PlayerPage

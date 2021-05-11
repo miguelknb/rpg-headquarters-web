@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Flex,
   HStack,
   Image,
   Progress,
@@ -12,17 +13,17 @@ import {
 import { Form, Formik } from "formik";
 import {InputNumberField} from "../components/inputField";
 import Bar from "./bar";
+import { selectPlayerImage } from "../utils/selectPlayerImg";
 
 const Player: React.FC<any> = ({ player }) => {
-  const me = {
-    id: 2,
-  };
   const [health, setHealth] = useState(player.currentHealth);
   const [inputType, setInputType] = useState('');
-
+  
   let healthPercentage: number = (health / player.maxHealth) * 100;
+  
+  console.log('batata', player)
 
-  let ownsPlayer = true// me.id === player.id;
+  let currentImageUrl;
 
   return (
     <Box
@@ -37,11 +38,11 @@ const Player: React.FC<any> = ({ player }) => {
       backgroundColor="transparent"
     >
       <Box size="sm">
-        <Image boxSize="200px" src={player.imgUrl} />
+        <Image boxSize="200px" src={selectPlayerImage(player)} />
       </Box>
-      <Box mb="2rem" alignItems="">
+      {/* <Box mb="2rem" alignItems="">
         <Text fontSize={"3xl"}>{player.name.toString()}</Text>
-      </Box>
+      </Box> */}
       <HStack spacing={10} direction="row">
         <Checkbox size="lg" colorScheme="red">
           Insano
@@ -73,15 +74,15 @@ const Player: React.FC<any> = ({ player }) => {
             {({ values, handleChange, isSubmitting }) => (
               <Form>
               <Stack direction="row" spacing="5" justifyContent="flex-start">
-                <Box alignContent="center" minWidth="15rem">
-                  <Text>Vida</Text>
+                <Flex direction="row" alignContent="center" minWidth="15rem">
+                  <Text mr={3} fontSize="2xl">HP</Text>
                   <Bar current={health} max={player.maxHealth} width={'14rem'} height={'4rem'} displayValue={true}/>
-                </Box>
+                </Flex>
                 <Box maxW="10rem" alignContent="center">
                   <Button
                     onClick={() => setInputType('heal')}
                     type='submit'
-                    disabled={healthPercentage >= 100 || !ownsPlayer}
+                    disabled={healthPercentage >= 100}
                     colorScheme="green"
                     isLoading={isSubmitting}
                     width={'100px'}
@@ -92,7 +93,7 @@ const Player: React.FC<any> = ({ player }) => {
                   <Button mt={2} 
                     onClick={() => setInputType('damage')}
                     type='submit'
-                    disabled={healthPercentage <= 0 || !ownsPlayer}
+                    disabled={healthPercentage <= 0}
                     colorScheme="red"
                     isLoading={isSubmitting}
                     width={'100px'}

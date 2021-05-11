@@ -106,6 +106,16 @@ export type User = {
   __typename?: 'User';
   id: Scalars['Int'];
   username: Scalars['String'];
+  maxHealth: Scalars['Int'];
+  currentHealth: Scalars['Int'];
+  partyId: Scalars['Int'];
+  imgUrl_sane_normal: Scalars['String'];
+  imgUrl_sane_hurt: Scalars['String'];
+  imgUrl_sane_dying: Scalars['String'];
+  imgUrl_insane_normal: Scalars['String'];
+  imgUrl_insane_hurt: Scalars['String'];
+  imgUrl_insane_dying: Scalars['String'];
+  imgUrl_dead: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -156,6 +166,17 @@ export type RegisterMutation = (
   ) }
 );
 
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'maxHealth' | 'currentHealth' | 'imgUrl_sane_normal' | 'imgUrl_sane_hurt' | 'imgUrl_sane_dying'>
+  )> }
+);
+
 
 export const LoginDocument = gql`
     mutation Login($username: String!, $password: String!) {
@@ -190,4 +211,21 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const MeDocument = gql`
+    query Me {
+  me {
+    id
+    username
+    maxHealth
+    currentHealth
+    imgUrl_sane_normal
+    imgUrl_sane_hurt
+    imgUrl_sane_dying
+  }
+}
+    `;
+
+export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 };
