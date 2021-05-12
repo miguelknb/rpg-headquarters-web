@@ -13,7 +13,8 @@ import { SubscriptionClient } from 'subscriptions-transport-ws';
 const subscriptionClient = process.browser ? new SubscriptionClient(
   "ws://localhost:4000/subscriptions",
   {
-    reconnect: true
+    reconnect: true,
+    timeout: 30000,
   },
   // ws
 ) : null;

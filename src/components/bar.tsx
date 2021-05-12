@@ -11,7 +11,7 @@ const BarContainer = styled.div`
 const Background = styled.div`
     width: 100%;
     height: 100%;
-    /* background-color: ${props => props.color}; */
+    background-color: ${props => props.bgColor};
     z-index: 2;
 `
 const CurrentBar = styled.div`
@@ -27,7 +27,7 @@ const BarValue = styled.p`
     color: black;
 `
 
-const StatusBar : React.FC<any> = ({current, max, displayValue, width, height, color}) => {
+const StatusBar : React.FC<any> = ({current, max, displayValue, width, height, color, bgColor}) => {
 
 
     let percentage = current/max * 100;
@@ -35,7 +35,7 @@ const StatusBar : React.FC<any> = ({current, max, displayValue, width, height, c
 
     return (
         <BarContainer width={width} height={height}>
-            <Background color={color}>
+            <Background bgColor={bgColor}>
                 <CurrentBar percentage={percentage} color={color}>
                     <BarValue>
                         {displayValue ? current + '/' + max

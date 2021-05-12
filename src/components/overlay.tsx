@@ -33,25 +33,27 @@ const handleSubscription = (user, response) => {
 
 const Overlay: React.FC<any> = ({ id }) => {
 
+  let startedFetching = false;
+
   let player;
 
   let [{ data, fetching, error }] = useUserQuery({ variables: { id: id } });
 
   const [res] = useSubscription({ query: statusChange }, handleSubscription);
 
-  console.log('res', res)
-
   if (fetching) return <p>Loading...</p>;
 
   if (error) return `Error ${error}`;
 
   if(res.data) {
+    startedFetching = true;
     player= res.data.StatusChange
+    console.log(player)
   }
   else {
-
-    player = data.user;
+    if(!startedFetching) player = data.user;
   }
+
   return (
     <Flex direction={"column"} alignItems={"center"} p={4} m={"auto"}>
       <Text p={5} fontSize="3xl">
@@ -66,6 +68,7 @@ const Overlay: React.FC<any> = ({ id }) => {
             height={"4rem"}
             displayValue={false}
             color={"red"}
+            bgColor={"darkred"}
           />
           <Flex>
             <Text mt={5} fontSize={"2xl"} color={"black"}>
@@ -84,6 +87,7 @@ const Overlay: React.FC<any> = ({ id }) => {
             height={"4rem"}
             displayValue={false}
             color={"#5b1d8a"}
+            bgColor={"#1a002b"}
           />
           <Text mt={5} fontSize={"2xl"} color={"black"}>
             {player.currentSanity}/{player.maxSanity}

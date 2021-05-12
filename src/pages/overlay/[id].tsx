@@ -20,7 +20,7 @@ const OverlayPage: React.FC<any> = ({}) => {
 
 
 	return (
-		<Overlay id={pid}/>
+    <Overlay id={pid}/>
 	)
 
 };

@@ -98,7 +98,7 @@ const Player: React.FC<any> = ({ player }) => {
               <Stack direction="row" spacing="5" alignItems={'center'} justifyContent="flex-start">
                 <Flex direction="row" alignContent="center" minWidth="15rem">
                   <Text mr={3} fontSize="2xl">HP</Text>
-                  <Bar current={health} max={player.maxHealth} width={'14rem'} height={'4rem'} displayValue={true} color={"red"}/>
+                  <Bar current={health} max={player.maxHealth} width={'14rem'} height={'4rem'} displayValue={true} color={"red"} bgColor={"darkred"}/>
                 </Flex>
                 <Box maxW="10rem" alignContent="center">
                   <Button
@@ -157,7 +157,7 @@ const Player: React.FC<any> = ({ player }) => {
               <Stack direction="row" spacing="5" alignItems={'center'} justifyContent="flex-start">
                 <Flex direction="row" alignContent="center" minWidth="15rem">
                   <Text mr={3} fontSize="2xl">SN</Text>
-                  <Bar current={sanity} max={player.maxSanity} width={'14rem'} height={'4rem'} displayValue={true} color={"#5b1d8a"}/>
+                  <Bar current={sanity} max={player.maxSanity} width={'14rem'} height={'4rem'} displayValue={true} color={"#6300a3"} bgColor={"#1a002b"}/>
                 </Flex>
                 <Box maxW="10rem" alignContent="center">
                   <Button
