@@ -1,0 +1,15 @@
+query User($id: Float!){
+	user(id: $id){
+    id
+    username
+    maxHealth
+    currentHealth
+    maxSanity
+    currentSanity
+    # partyId
+		imgUrl_sane_normal
+		imgUrl_sane_hurt
+		imgUrl_sane_dying
+		imgUrl_dead
+  }
+}

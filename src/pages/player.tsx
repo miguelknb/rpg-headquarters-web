@@ -4,6 +4,7 @@ import PlayerCard from '../components/player'
 import { useMeQuery } from '../generated/graphql';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import Layout from '../components/layoyut';
 
 const mockCharacter = {
     id: 3,
@@ -27,7 +28,9 @@ const PlayerPage : React.FC<any> = ({}) => {
 
     if (data) {    
         return (
-            <PlayerCard player={data.me}/>
+            <Layout>
+                <PlayerCard player={data.me}/>
+            </Layout>
             ) 
     }
 

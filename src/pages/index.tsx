@@ -4,7 +4,7 @@ import NavBar from "../components/navbar"
 const Index = () => {
 
   return <>
-    {/* <NavBar></NavBar>     */}
+    <NavBar></NavBar>    
     <div>Oi</div>
   </>
 }

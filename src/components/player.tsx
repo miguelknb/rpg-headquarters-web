@@ -14,17 +14,16 @@ import { Form, Formik } from "formik";
 import {InputNumberField} from "../components/inputField";
 import Bar from "./bar";
 import { selectPlayerImage } from "../utils/selectPlayerImg";
-import { useDamageMutation, useDamageSanityMutation, useHealMutation, useHealSanityMutation } from "../generated/graphql";
+import { useChangeHealthMutation, useChangeSanityMutation, useDamageMutation, useDamageSanityMutation, useHealMutation, useHealSanityMutation } from "../generated/graphql";
 
 const Player: React.FC<any> = ({ player }) => {
 
   const [sanity, setSanity] = useState(player.currentSanity);
   const [health, setHealth] = useState(player.currentHealth);
   const [inputType, setInputType] = useState('');
-  const [, heal] = useHealMutation();
-  const [, damage] = useDamageMutation();
-  const [, healSanity] = useHealSanityMutation()
-  const [, damageSanity] = useDamageSanityMutation();
+
+  const [, changeSanity] = useChangeSanityMutation();
+  const [, changeHealth] = useChangeHealthMutation();
 
   let healthPercentage: number = (health / player.maxHealth) * 100;
   let sanityPercentage: number = (sanity / player.maxSanity) * 100;
@@ -47,7 +46,7 @@ const Player: React.FC<any> = ({ player }) => {
       {/* <Box mb="2rem" alignItems="">
         <Text fontSize={"3xl"}>{player.name.toString()}</Text>
       </Box> */}
-      <HStack spacing={10} direction="row">
+      <HStack mt={5} spacing={10} direction="row">
         <Checkbox size="lg" colorScheme="red">
           Insano
         </Checkbox>
@@ -66,15 +65,17 @@ const Player: React.FC<any> = ({ player }) => {
 
               let response;
 
-              const inputvalue =  Number(values.value);
+              let newHealth;
+
               if( inputType === 'heal') {
-                response = await heal({id: player.id, healHealth: inputvalue});
-                if (response.data) setHealth(response.data.heal.currentHealth);
+                newHealth = player.currentHealth + Number(values.value);
               }
               if ( inputType === 'damage') {
-                response = await damage({id: player.id, dmgHealth: inputvalue});
-                if (response.data) setHealth(response.data.damage.currentHealth);
+                newHealth = player.currentHealth - Number(values.value);
               }
+
+              response = await changeHealth({id: player.id, newHealth: newHealth});
+              if (response.data) setHealth(response.data.changeHealth.currentHealth);
               
             }}
           >
@@ -123,16 +124,18 @@ const Player: React.FC<any> = ({ player }) => {
 
               let response;
 
-              const inputvalue =  Number(values.value);
+              let newSanity;
+
               if( inputType === 'heal') {
-                response = await healSanity({id: player.id, healSanity: inputvalue});
-                if (response.data) setSanity(response.data.healSanity.currentSanity);
+                newSanity = player.currentSanity + Number(values.value);
               }
               if ( inputType === 'damage') {
-                response = await damageSanity({id: player.id, dmgSanity: inputvalue});
-                if (response.data) setSanity(response.data.damageSanity.currentSanity);
+                newSanity = player.currentSanity - Number(values.value);
               }
               
+              response = await changeSanity({id: player.id, newSanity: newSanity});
+              if (response.data) setSanity(response.data.changeSanity.currentSanity);
+
             }}
           >
             {({ values, handleChange, isSubmitting }) => (

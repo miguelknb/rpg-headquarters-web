@@ -12,7 +12,10 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
 };
+
 
 export type FieldError = {
   __typename?: 'FieldError';
@@ -29,6 +32,8 @@ export type Mutation = {
   damage?: Maybe<User>;
   healSanity?: Maybe<User>;
   damageSanity?: Maybe<User>;
+  changeHealth?: Maybe<User>;
+  changeSanity?: Maybe<User>;
 };
 
 
@@ -73,9 +78,32 @@ export type MutationDamageSanityArgs = {
   id: Scalars['Float'];
 };
 
+
+export type MutationChangeHealthArgs = {
+  newHealth: Scalars['Float'];
+  id: Scalars['Float'];
+};
+
+
+export type MutationChangeSanityArgs = {
+  newSanity: Scalars['Float'];
+  id: Scalars['Float'];
+};
+
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
+  user?: Maybe<User>;
+};
+
+
+export type QueryUserArgs = {
+  id: Scalars['Float'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  healthNotification: Scalars['DateTime'];
 };
 
 export type User = {
@@ -103,6 +131,34 @@ export type UserResponse = {
   errors?: Maybe<Array<FieldError>>;
   user?: Maybe<User>;
 };
+
+export type ChangeHealthMutationVariables = Exact<{
+  id: Scalars['Float'];
+  newHealth: Scalars['Float'];
+}>;
+
+
+export type ChangeHealthMutation = (
+  { __typename?: 'Mutation' }
+  & { changeHealth?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'maxHealth' | 'currentHealth'>
+  )> }
+);
+
+export type ChangeSanityMutationVariables = Exact<{
+  id: Scalars['Float'];
+  newSanity: Scalars['Float'];
+}>;
+
+
+export type ChangeSanityMutation = (
+  { __typename?: 'Mutation' }
+  & { changeSanity?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'maxSanity' | 'currentSanity'>
+  )> }
+);
 
 export type DamageMutationVariables = Exact<{
   id: Scalars['Float'];
@@ -211,7 +267,46 @@ export type MeQuery = (
   )> }
 );
 
+export type UserQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
 
+
+export type UserQuery = (
+  { __typename?: 'Query' }
+  & { user?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'maxHealth' | 'currentHealth' | 'maxSanity' | 'currentSanity' | 'imgUrl_sane_normal' | 'imgUrl_sane_hurt' | 'imgUrl_sane_dying' | 'imgUrl_dead'>
+  )> }
+);
+
+
+export const ChangeHealthDocument = gql`
+    mutation ChangeHealth($id: Float!, $newHealth: Float!) {
+  changeHealth(id: $id, newHealth: $newHealth) {
+    id
+    maxHealth
+    currentHealth
+  }
+}
+    `;
+
+export function useChangeHealthMutation() {
+  return Urql.useMutation<ChangeHealthMutation, ChangeHealthMutationVariables>(ChangeHealthDocument);
+};
+export const ChangeSanityDocument = gql`
+    mutation ChangeSanity($id: Float!, $newSanity: Float!) {
+  changeSanity(id: $id, newSanity: $newSanity) {
+    id
+    maxSanity
+    currentSanity
+  }
+}
+    `;
+
+export function useChangeSanityMutation() {
+  return Urql.useMutation<ChangeSanityMutation, ChangeSanityMutationVariables>(ChangeSanityDocument);
+};
 export const DamageDocument = gql`
     mutation Damage($id: Float!, $dmgHealth: Float!) {
   damage(id: $id, dmgHealth: $dmgHealth) {
@@ -317,4 +412,24 @@ export const MeDocument = gql`
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+};
+export const UserDocument = gql`
+    query User($id: Float!) {
+  user(id: $id) {
+    id
+    username
+    maxHealth
+    currentHealth
+    maxSanity
+    currentSanity
+    imgUrl_sane_normal
+    imgUrl_sane_hurt
+    imgUrl_sane_dying
+    imgUrl_dead
+  }
+}
+    `;
+
+export function useUserQuery(options: Omit<Urql.UseQueryArgs<UserQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserQuery>({ query: UserDocument, ...options });
 };

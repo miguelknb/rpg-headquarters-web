@@ -1,0 +1,7 @@
+mutation ChangeHealth($id: Float!, $newHealth: Float!){
+	changeHealth(id: $id, newHealth: $newHealth) {
+    id
+    maxHealth
+    currentHealth
+  }
+}
