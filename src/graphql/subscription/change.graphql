@@ -1,0 +1,11 @@
+subscription ChangeStatus {
+  StatusChange {
+	id
+    username
+    maxHealth
+    currentHealth
+    maxSanity
+    currentSanity
+    isInsane
+  }
+}

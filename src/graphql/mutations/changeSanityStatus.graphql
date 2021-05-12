@@ -1,0 +1,6 @@
+mutation ChangeInsanityStatus($id: Float!, $sanity: Boolean!){
+	changeInsanityStatus(id: $id, sanity: $sanity) {
+    id
+    isInsane
+  }
+}

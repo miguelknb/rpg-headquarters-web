@@ -6,9 +6,13 @@ query Me {
     currentHealth
     maxSanity
     currentSanity
+    isInsane
     imgUrl_sane_normal
     imgUrl_sane_hurt
     imgUrl_sane_dying
+    imgUrl_insane_normal
+    imgUrl_insane_hurt
+    imgUrl_insane_dying
     imgUrl_dead
   }
 }

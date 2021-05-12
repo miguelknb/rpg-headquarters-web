@@ -12,10 +12,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
-  DateTime: any;
 };
-
 
 export type FieldError = {
   __typename?: 'FieldError';
@@ -28,6 +25,7 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   changeMaxHealth?: Maybe<User>;
+  changeInsanityStatus?: Maybe<User>;
   heal?: Maybe<User>;
   damage?: Maybe<User>;
   healSanity?: Maybe<User>;
@@ -51,6 +49,12 @@ export type MutationLoginArgs = {
 
 export type MutationChangeMaxHealthArgs = {
   newHealth: Scalars['Float'];
+  id: Scalars['Float'];
+};
+
+
+export type MutationChangeInsanityStatusArgs = {
+  sanity: Scalars['Boolean'];
   id: Scalars['Float'];
 };
 
@@ -103,7 +107,7 @@ export type QueryUserArgs = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  healthNotification: Scalars['DateTime'];
+  StatusChange: User;
 };
 
 export type User = {
@@ -115,6 +119,7 @@ export type User = {
   maxSanity: Scalars['Int'];
   currentSanity: Scalars['Int'];
   partyId: Scalars['Int'];
+  isInsane: Scalars['Boolean'];
   imgUrl_sane_normal: Scalars['String'];
   imgUrl_sane_hurt: Scalars['String'];
   imgUrl_sane_dying: Scalars['String'];
@@ -157,6 +162,20 @@ export type ChangeSanityMutation = (
   & { changeSanity?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'maxSanity' | 'currentSanity'>
+  )> }
+);
+
+export type ChangeInsanityStatusMutationVariables = Exact<{
+  id: Scalars['Float'];
+  sanity: Scalars['Boolean'];
+}>;
+
+
+export type ChangeInsanityStatusMutation = (
+  { __typename?: 'Mutation' }
+  & { changeInsanityStatus?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'isInsane'>
   )> }
 );
 
@@ -263,7 +282,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'maxHealth' | 'currentHealth' | 'maxSanity' | 'currentSanity' | 'imgUrl_sane_normal' | 'imgUrl_sane_hurt' | 'imgUrl_sane_dying' | 'imgUrl_dead'>
+    & Pick<User, 'id' | 'username' | 'maxHealth' | 'currentHealth' | 'maxSanity' | 'currentSanity' | 'isInsane' | 'imgUrl_sane_normal' | 'imgUrl_sane_hurt' | 'imgUrl_sane_dying' | 'imgUrl_insane_normal' | 'imgUrl_insane_hurt' | 'imgUrl_insane_dying' | 'imgUrl_dead'>
   )> }
 );
 
@@ -276,8 +295,19 @@ export type UserQuery = (
   { __typename?: 'Query' }
   & { user?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'maxHealth' | 'currentHealth' | 'maxSanity' | 'currentSanity' | 'imgUrl_sane_normal' | 'imgUrl_sane_hurt' | 'imgUrl_sane_dying' | 'imgUrl_dead'>
+    & Pick<User, 'id' | 'username' | 'maxHealth' | 'currentHealth' | 'maxSanity' | 'currentSanity' | 'isInsane' | 'imgUrl_sane_normal' | 'imgUrl_sane_hurt' | 'imgUrl_sane_dying' | 'imgUrl_insane_normal' | 'imgUrl_insane_hurt' | 'imgUrl_insane_dying' | 'imgUrl_dead'>
   )> }
+);
+
+export type ChangeStatusSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ChangeStatusSubscription = (
+  { __typename?: 'Subscription' }
+  & { StatusChange: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'maxHealth' | 'currentHealth' | 'maxSanity' | 'currentSanity' | 'isInsane'>
+  ) }
 );
 
 
@@ -306,6 +336,18 @@ export const ChangeSanityDocument = gql`
 
 export function useChangeSanityMutation() {
   return Urql.useMutation<ChangeSanityMutation, ChangeSanityMutationVariables>(ChangeSanityDocument);
+};
+export const ChangeInsanityStatusDocument = gql`
+    mutation ChangeInsanityStatus($id: Float!, $sanity: Boolean!) {
+  changeInsanityStatus(id: $id, sanity: $sanity) {
+    id
+    isInsane
+  }
+}
+    `;
+
+export function useChangeInsanityStatusMutation() {
+  return Urql.useMutation<ChangeInsanityStatusMutation, ChangeInsanityStatusMutationVariables>(ChangeInsanityStatusDocument);
 };
 export const DamageDocument = gql`
     mutation Damage($id: Float!, $dmgHealth: Float!) {
@@ -402,9 +444,13 @@ export const MeDocument = gql`
     currentHealth
     maxSanity
     currentSanity
+    isInsane
     imgUrl_sane_normal
     imgUrl_sane_hurt
     imgUrl_sane_dying
+    imgUrl_insane_normal
+    imgUrl_insane_hurt
+    imgUrl_insane_dying
     imgUrl_dead
   }
 }
@@ -422,9 +468,13 @@ export const UserDocument = gql`
     currentHealth
     maxSanity
     currentSanity
+    isInsane
     imgUrl_sane_normal
     imgUrl_sane_hurt
     imgUrl_sane_dying
+    imgUrl_insane_normal
+    imgUrl_insane_hurt
+    imgUrl_insane_dying
     imgUrl_dead
   }
 }
@@ -432,4 +482,21 @@ export const UserDocument = gql`
 
 export function useUserQuery(options: Omit<Urql.UseQueryArgs<UserQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<UserQuery>({ query: UserDocument, ...options });
+};
+export const ChangeStatusDocument = gql`
+    subscription ChangeStatus {
+  StatusChange {
+    id
+    username
+    maxHealth
+    currentHealth
+    maxSanity
+    currentSanity
+    isInsane
+  }
+}
+    `;
+
+export function useChangeStatusSubscription<TData = ChangeStatusSubscription>(options: Omit<Urql.UseSubscriptionArgs<ChangeStatusSubscriptionVariables>, 'query'> = {}, handler?: Urql.SubscriptionHandler<ChangeStatusSubscription, TData>) {
+  return Urql.useSubscription<ChangeStatusSubscription, TData, ChangeStatusSubscriptionVariables>({ query: ChangeStatusDocument, ...options }, handler);
 };

@@ -14,7 +14,7 @@ import { Form, Formik } from "formik";
 import {InputNumberField} from "../components/inputField";
 import Bar from "./bar";
 import { selectPlayerImage } from "../utils/selectPlayerImg";
-import { useChangeHealthMutation, useChangeSanityMutation, useDamageMutation, useDamageSanityMutation, useHealMutation, useHealSanityMutation } from "../generated/graphql";
+import { useChangeHealthMutation, useChangeInsanityStatusMutation, useChangeSanityMutation, useDamageMutation, useDamageSanityMutation, useHealMutation, useHealSanityMutation } from "../generated/graphql";
 
 const Player: React.FC<any> = ({ player }) => {
 
@@ -22,8 +22,12 @@ const Player: React.FC<any> = ({ player }) => {
   const [health, setHealth] = useState(player.currentHealth);
   const [inputType, setInputType] = useState('');
 
+  const [insane, setInsane] = useState(player.isInsane);
+
   const [, changeSanity] = useChangeSanityMutation();
   const [, changeHealth] = useChangeHealthMutation();
+
+  const [, changeInsanityStatus] = useChangeInsanityStatusMutation();
 
   let healthPercentage: number = (health / player.maxHealth) * 100;
   let sanityPercentage: number = (sanity / player.maxSanity) * 100;
@@ -47,7 +51,17 @@ const Player: React.FC<any> = ({ player }) => {
         <Text fontSize={"3xl"}>{player.name.toString()}</Text>
       </Box> */}
       <HStack mt={5} spacing={10} direction="row">
-        <Checkbox size="lg" colorScheme="red">
+        <Checkbox
+        size="lg"
+        colorScheme="red"
+        checked={insane}
+        onChange={ async ()=> {
+          let response = await changeInsanityStatus({id: player.id, sanity: !insane});
+          if (response) {
+            setInsane(response.data.changeInsanityStatus.isInsane)
+          }
+        }}
+        >
           Insano
         </Checkbox>
         {/* <Checkbox size="lg" colorScheme="green" defaultIsChecked>
