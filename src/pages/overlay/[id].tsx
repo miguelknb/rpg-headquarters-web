@@ -20,7 +20,9 @@ const OverlayPage: React.FC<any> = ({}) => {
 
 
 	return (
+    <Box backgroundColor="transparent">
     <Overlay id={pid}/>
+    </Box>
 	)
 
 };

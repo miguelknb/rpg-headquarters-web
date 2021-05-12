@@ -6,13 +6,14 @@ const BarContainer = styled.div`
     display: flex;
     width: ${props => props.width};
     height: ${props => props.height};
-    border: 4px solid black;
+    /* border: 4px solid black; */
 `
 const Background = styled.div`
     width: 100%;
     height: 100%;
     background-color: ${props => props.bgColor};
     z-index: 2;
+    opacity: 90%;
 `
 const CurrentBar = styled.div`
     display: flex;
@@ -21,10 +22,20 @@ const CurrentBar = styled.div`
     width: ${props => `${props.percentage}%`};
     height: 100%;
     z-index: 5;
+    opacity: 85%;
+`
+
+const Texture = styled.div`
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background: url('https://filterforge.com/filters/11141.jpg');
 `
 
 const BarValue = styled.p`
-    color: black;
+    padding: 1rem;
+    color: white;
+    font-size: 1.3rem;
 `
 
 const StatusBar : React.FC<any> = ({current, max, displayValue, width, height, color, bgColor}) => {
@@ -35,14 +46,17 @@ const StatusBar : React.FC<any> = ({current, max, displayValue, width, height, c
 
     return (
         <BarContainer width={width} height={height}>
+            <Texture>
             <Background bgColor={bgColor}>
                 <CurrentBar percentage={percentage} color={color}>
+
                     <BarValue>
                         {displayValue ? current + '/' + max
                             :    ''}
                     </BarValue>
                 </CurrentBar>
             </Background>
+            </Texture>
         </BarContainer>
     )
 }

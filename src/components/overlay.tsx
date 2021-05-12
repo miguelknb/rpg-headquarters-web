@@ -55,11 +55,11 @@ const Overlay: React.FC<any> = ({ id }) => {
   }
 
   return (
-    <Flex direction={"column"} alignItems={"center"} p={4} m={"auto"}>
+    <Flex direction={"column"} alignItems={"center"} p={4} m={"auto"} backgroundColor={"transparent"}>
       <Text p={5} fontSize="3xl">
         {player.username}'s overlay page
       </Text>
-      <Box p={10} background={"transparent"}>
+      <Box p={10} backgroundColor={"transparent"}>
         <Box p={10} borderColor="black" border="5px">
           <Bar
             current={player.currentHealth}
@@ -71,7 +71,7 @@ const Overlay: React.FC<any> = ({ id }) => {
             bgColor={"darkred"}
           />
           <Flex>
-            <Text mt={5} fontSize={"2xl"} color={"black"}>
+            <Text mt={5} mr={5} fontSize={"2xl"} color={"black"}>
               {player.currentHealth}/{player.maxHealth}
             </Text>
             <Text mt={5} fontSize={"2xl"} color={"white"}>
@@ -89,9 +89,14 @@ const Overlay: React.FC<any> = ({ id }) => {
             color={"#5b1d8a"}
             bgColor={"#1a002b"}
           />
-          <Text mt={5} fontSize={"2xl"} color={"black"}>
+          <Flex>
+          <Text mt={5} mr={5} fontSize={"2xl"} color={"black"}>
             {player.currentSanity}/{player.maxSanity}
           </Text>
+          <Text mt={5} mr={5} fontSize={"2xl"} color={"white"}>
+            {player.currentSanity}/{player.maxSanity}
+          </Text>
+          </Flex>
         </Box>
         <Box size="sm" alignItems="center">
           <Image boxSize="320px" src={selectPlayerImage(player)} />

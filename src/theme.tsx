@@ -11,6 +11,14 @@ const breakpoints = createBreakpoints({
 })
 
 const theme = extendTheme({
+  styles: {
+    global: {
+      "body": {
+        "background": "transparent",
+        "backgroundColor": "transparent",
+      }
+    }
+  },
   colors: {
     black: '#16161D',
   },
