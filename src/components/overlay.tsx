@@ -5,6 +5,8 @@ import { selectPlayerImage } from "../utils/selectPlayerImg";
 import Bar from "./bar";
 import { useSubscription } from "urql";
 
+document.body.style.backgroundColor = "transparent";
+
 const statusChange = `
 subscription {
 	StatusChange{

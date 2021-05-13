@@ -31,9 +31,15 @@ const NavBar: React.FC<NavBarProps> = ({}) => {
 
 	else {
 		body = (
-			<Flex>
-				<Box mr={2} color={'white'}>Olá {data.me.username}</Box>
-				<Button variant="link">Logout</Button>
+			<Flex direction="row" width="100%">
+				<Box mr={25} color={'white'}>Olá {data.me.username}</Box>
+				<NextLink  href={"/player"}>
+					<Link mr={6} color={"white"}>Player</Link>
+				</NextLink>
+				<NextLink href={"/update"}>
+					<Link mr={6} color={"white"}>Edit Player</Link>
+				</NextLink>
+				<Button alignSelf={'end'} variant="link">Logout</Button>
 			</Flex>
 
 		)
@@ -41,9 +47,7 @@ const NavBar: React.FC<NavBarProps> = ({}) => {
 
   return (
     <Box bg="steelblue" p={5}>
-      <Box marginLeft={"auto"}>
-				{body}
-			</Box>
+		{body}
     </Box>
   );
 };

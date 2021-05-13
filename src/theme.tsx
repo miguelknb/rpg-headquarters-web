@@ -10,12 +10,17 @@ const breakpoints = createBreakpoints({
   xl: '80em',
 })
 
+
 const theme = extendTheme({
+  config: {
+    initialColorMode: "dark",
+    useSystemColorMode: false,
+  },
   styles: {
     global: {
       "body": {
         "background": "transparent",
-        "backgroundColor": "transparent",
+        "backgroundColor": "gray.900",
       }
     }
   },

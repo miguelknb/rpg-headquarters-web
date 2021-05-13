@@ -1,16 +1,38 @@
-mutation UpdateUser($id: Float!,
-                    $maxHealth: Float!,
-                    $maxSanity: Float!,
-                    $imgUrl_sane_normal: String!,
-                    $imgUrl_sane_hurt: String!,
-                    $imgUrl_sane_dying: String!,
-                    $imgUrl_insane_normal: String!,
-                    $imgUrl_insane_hurt: String!,
-                    $imgUrl_insane_dying: String!,
-                    ){
-	UpdateUser(id: $id, maxHealth: $maxHealth, maxSanity: $maxSanity, imgUrl_sane_normal: $imgUrl_sane_normal,  imgUrl_sane_hurt: $imgUrl_sane_hurt) {
-        id
-        maxHealth
-        currentHealth
+mutation UpdateUser(
+  $id: Float!
+  $maxHealth: Float!
+  $maxSanity: Float!
+  $imgUrl_sane_normal: String!
+  $imgUrl_sane_hurt: String!
+  $imgUrl_sane_dying: String!
+  $imgUrl_insane_normal: String!
+  $imgUrl_insane_hurt: String!
+  $imgUrl_insane_dying: String!
+  $imgUrl_dead: String!
+) {
+  updateUser(
+    id: $id
+    maxHealth: $maxHealth
+    maxSanity: $maxSanity
+    imgUrl_sane_normal: $imgUrl_sane_normal
+    imgUrl_sane_hurt: $imgUrl_sane_hurt
+    imgUrl_sane_dying: $imgUrl_sane_dying
+    imgUrl_insane_normal: $imgUrl_insane_normal
+    imgUrl_insane_hurt: $imgUrl_insane_hurt
+    imgUrl_insane_dying: $imgUrl_insane_dying
+    imgUrl_dead: $imgUrl_dead
+  ) {
+    id
+    maxHealth
+    currentHealth
+    maxHealth
+    maxSanity
+    imgUrl_sane_normal
+    imgUrl_sane_hurt
+    imgUrl_sane_dying
+    imgUrl_insane_normal
+    imgUrl_insane_hurt
+    imgUrl_insane_dying
+    imgUrl_dead
   }
 }

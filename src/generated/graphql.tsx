@@ -31,6 +31,7 @@ export type Mutation = {
   healSanity?: Maybe<User>;
   damageSanity?: Maybe<User>;
   changeHealth?: Maybe<User>;
+  updateUser?: Maybe<User>;
   changeSanity?: Maybe<User>;
 };
 
@@ -85,6 +86,20 @@ export type MutationDamageSanityArgs = {
 
 export type MutationChangeHealthArgs = {
   newHealth: Scalars['Float'];
+  id: Scalars['Float'];
+};
+
+
+export type MutationUpdateUserArgs = {
+  imgUrl_dead: Scalars['String'];
+  imgUrl_insane_dying: Scalars['String'];
+  imgUrl_insane_hurt: Scalars['String'];
+  imgUrl_insane_normal: Scalars['String'];
+  imgUrl_sane_dying: Scalars['String'];
+  imgUrl_sane_hurt: Scalars['String'];
+  imgUrl_sane_normal: Scalars['String'];
+  maxSanity: Scalars['Float'];
+  maxHealth: Scalars['Float'];
   id: Scalars['Float'];
 };
 
@@ -275,6 +290,28 @@ export type RegisterMutation = (
   ) }
 );
 
+export type UpdateUserMutationVariables = Exact<{
+  id: Scalars['Float'];
+  maxHealth: Scalars['Float'];
+  maxSanity: Scalars['Float'];
+  imgUrl_sane_normal: Scalars['String'];
+  imgUrl_sane_hurt: Scalars['String'];
+  imgUrl_sane_dying: Scalars['String'];
+  imgUrl_insane_normal: Scalars['String'];
+  imgUrl_insane_hurt: Scalars['String'];
+  imgUrl_insane_dying: Scalars['String'];
+  imgUrl_dead: Scalars['String'];
+}>;
+
+
+export type UpdateUserMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUser?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'maxHealth' | 'currentHealth' | 'maxSanity' | 'imgUrl_sane_normal' | 'imgUrl_sane_hurt' | 'imgUrl_sane_dying' | 'imgUrl_insane_normal' | 'imgUrl_insane_hurt' | 'imgUrl_insane_dying' | 'imgUrl_dead'>
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -434,6 +471,39 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($id: Float!, $maxHealth: Float!, $maxSanity: Float!, $imgUrl_sane_normal: String!, $imgUrl_sane_hurt: String!, $imgUrl_sane_dying: String!, $imgUrl_insane_normal: String!, $imgUrl_insane_hurt: String!, $imgUrl_insane_dying: String!, $imgUrl_dead: String!) {
+  updateUser(
+    id: $id
+    maxHealth: $maxHealth
+    maxSanity: $maxSanity
+    imgUrl_sane_normal: $imgUrl_sane_normal
+    imgUrl_sane_hurt: $imgUrl_sane_hurt
+    imgUrl_sane_dying: $imgUrl_sane_dying
+    imgUrl_insane_normal: $imgUrl_insane_normal
+    imgUrl_insane_hurt: $imgUrl_insane_hurt
+    imgUrl_insane_dying: $imgUrl_insane_dying
+    imgUrl_dead: $imgUrl_dead
+  ) {
+    id
+    maxHealth
+    currentHealth
+    maxHealth
+    maxSanity
+    imgUrl_sane_normal
+    imgUrl_sane_hurt
+    imgUrl_sane_dying
+    imgUrl_insane_normal
+    imgUrl_insane_hurt
+    imgUrl_insane_dying
+    imgUrl_dead
+  }
+}
+    `;
+
+export function useUpdateUserMutation() {
+  return Urql.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument);
 };
 export const MeDocument = gql`
     query Me {

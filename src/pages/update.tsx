@@ -4,18 +4,24 @@ import { useRouter } from "next/router";
 import React from "react";
 import { InputField } from "../components/inputField";
 import Layout from "../components/layoyut";
-import { useMeQuery, useRegisterMutation } from "../generated/graphql";
+import { useMeQuery, useRegisterMutation, useUpdateUserMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 
 const UpdatePage = ({}) => {
 
-  const [{ data, fetching }] = useMeQuery();
+  const [{ data, fetching, error }] = useMeQuery();
 
 	const router = useRouter();
 
-  const [, register] = useRegisterMutation();
+  const [, update] = useUpdateUserMutation();
 
 	if (fetching) return <Box p={25} m={"auto"}><Text fontSize="5x1">Loading</Text></Box>
+
+  if (data && data.me === null) {
+    router.push('/login');
+  }
+
+  console.log(data.me)
 
 	const player = data?.me
 
@@ -36,22 +42,33 @@ const UpdatePage = ({}) => {
 					imgUrl_dead: player.imgUrl_dead
 				}}
         onSubmit={async (values, { setErrors }) => {
-          const response = await register({
-            username: values.username,
-            password: values.password,
+          const response = await update({
+            id: player.id,
+            maxHealth: Number(values.maxHealth),
+            maxSanity: Number(values.maxSanity),
+            imgUrl_sane_normal: values.imgUrl_sane_normal,
+            imgUrl_sane_hurt: values.imgUrl_sane_hurt,
+            imgUrl_sane_dying: values.imgUrl_sane_dying,
+            imgUrl_insane_normal: values.imgUrl_insane_normal,
+            imgUrl_insane_hurt: values.imgUrl_insane_hurt,
+            imgUrl_insane_dying: values.imgUrl_insane_dying,
+            imgUrl_dead: values.imgUrl_dead
           });
 
-          if (response.data?.register.errors) {
-            setErrors(toErrorMap(response.data.register.errors));
-          } else if (response.data.register.user) {
+          if (!response.data) {
+            // setErrors(toErrorMap(response.errors));
+            console.log(response)
+          } else if (response.data) {
             router.push("/player");
           }
         }}
       >
         {({ values, handleChange, isSubmitting }) => (
           <Form>
+            <Text mb={10} color="white" fontSize="2xl">Status</Text>
             <Box>
               <InputField
+                color="white"
                 name="maxHealth"
                 placeholder="max health"
                 label="MaxHealth"
@@ -59,15 +76,17 @@ const UpdatePage = ({}) => {
             </Box>
             <Box mt={5}>
               <InputField
+                color="white"
                 type="maxSanity"
                 name="maxSanity"
                 placeholder="max sanity"
                 label="MaxSanity"
               />
             </Box>
-						<Text mt={10} fontSize="2xl">Images Url</Text>
+						  <Text mt={10} color="white" fontSize="2xl">Images Url</Text>
 						<Box mt={5}>
               <InputField
+                color="white"
                 name="imgUrl_sane_normal"
                 placeholder="image url"
                 label="Sane Normal Image"
@@ -75,6 +94,7 @@ const UpdatePage = ({}) => {
             </Box>
 						<Box mt={5}>
               <InputField
+                color="white"
                 name="imgUrl_sane_hurt"
                 placeholder="image url"
                 label="Sane Normal Hurt"
@@ -82,6 +102,7 @@ const UpdatePage = ({}) => {
             </Box>
 						<Box mt={5}>
               <InputField
+                color="white"
                 name="imgUrl_sane_dying"
                 placeholder="image url"
                 label="Sane Normal Dying"
@@ -89,6 +110,7 @@ const UpdatePage = ({}) => {
             </Box>
 						<Box mt={5}>
               <InputField
+                color="white"
                 name="imgUrl_insane_normal"
                 placeholder="image url"
                 label="Insane Normal Image"
@@ -96,6 +118,7 @@ const UpdatePage = ({}) => {
             </Box>
 						<Box mt={5}>
               <InputField
+                color="white"
                 name="imgUrl_insane_hurt"
                 placeholder="image url"
                 label="Insane Normal Hurt"
@@ -103,6 +126,7 @@ const UpdatePage = ({}) => {
             </Box>
 						<Box mt={5}>
               <InputField
+                color="white"
                 name="imgUrl_insane_dying"
                 placeholder="image url"
                 label="Insane Normal Dying"
@@ -110,12 +134,14 @@ const UpdatePage = ({}) => {
             </Box>
 						<Box mt={5}>
               <InputField
-                name="imgUrl_insane_dead"
+                color="white"
+                name="imgUrl_dead"
                 placeholder="image url"
                 label="Dead"
               />
             </Box>
             <Button
+              color="white"
               mt={5}
               type="submit"
               colorScheme="blue"
