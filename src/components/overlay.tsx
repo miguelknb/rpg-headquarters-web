@@ -27,11 +27,15 @@ subscription {
 
 `;
 
+interface OverlayPros {
+  id: number;
+}
+
 const handleSubscription = (user, response) => {
   return response;
 };
 
-const Overlay: React.FC<any> = ({ id }) => {
+const Overlay: React.FC<OverlayPros> = ({ id }) => {
 
   let startedFetching = false;
 
@@ -43,7 +47,9 @@ const Overlay: React.FC<any> = ({ id }) => {
 
   if (fetching) return <p>Loading...</p>;
 
-  if (error) return `Error ${error}`;
+  if (error) return <p>
+    Error {error};
+  </p> 
 
   if(res.data) {
     startedFetching = true;

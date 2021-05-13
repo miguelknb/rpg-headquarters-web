@@ -23,6 +23,7 @@ const CurrentBar = styled.div`
     height: 100%;
     z-index: 5;
     opacity: 85%;
+    transition: width ease-in-out .5s;
 `
 
 const Texture = styled.div`

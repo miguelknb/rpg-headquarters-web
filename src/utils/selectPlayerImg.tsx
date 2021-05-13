@@ -7,12 +7,12 @@ export const selectPlayerImage = (player) => {
     
     if (player?.isInsane)    {
         if (healthPercentage <= 20) currentImg = player.imgUrl_insane_dying;
-        else if (healthPercentage <= 60) currentImg = player.imgUrl_insane_hurt;
+        else if (healthPercentage <= 50) currentImg = player.imgUrl_insane_hurt;
         else currentImg = player.imgUrl_insane_normal;
     }
     else {
         if (healthPercentage <= 20) currentImg = player.imgUrl_sane_dying;
-        else if (healthPercentage <= 60) currentImg = player.imgUrl_sane_hurt;
+        else if (healthPercentage <= 50) currentImg = player.imgUrl_sane_hurt;
         else currentImg = player.imgUrl_sane_normal;
     }
 

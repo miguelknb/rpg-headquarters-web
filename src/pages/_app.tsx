@@ -11,7 +11,7 @@ import { SubscriptionClient } from 'subscriptions-transport-ws';
 // const ws = new WebSocket('ws://localhost:3000/ws')
 
 const subscriptionClient = process.browser ? new SubscriptionClient(
-  "ws://localhost:4000/subscriptions",
+  "ws://tatubola-rpg.xyz:4000/graphql",
   {
     reconnect: true,
     timeout: 30000,
@@ -23,7 +23,7 @@ const subscriptionClient = process.browser ? new SubscriptionClient(
 import theme from '../theme'
 
 const client = new Client({
-  url: "http://localhost:4000/graphql",
+  url: "http://tatubola-rpg.xyz:4000/graphql",
   fetchOptions : {
     credentials: "include",
   },

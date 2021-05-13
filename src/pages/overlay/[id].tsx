@@ -1,13 +1,6 @@
 import { Box, Flex, Stack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { Text, Image } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import Layout from "../../components/layoyut";
-import { useUserQuery } from "../../generated/graphql";
-import Bar from "../../components/bar";
-import { selectPlayerImage } from "../../utils/selectPlayerImg";
-import { useSubscription } from "urql";
 import Overlay from "../../components/overlay";
 
 
@@ -21,7 +14,7 @@ const OverlayPage: React.FC<any> = ({}) => {
 
 	return (
     <Box backgroundColor="transparent">
-    <Overlay id={pid}/>
+      <Overlay id={pid as number}/>
     </Box>
 	)
 
