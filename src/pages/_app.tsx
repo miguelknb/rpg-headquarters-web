@@ -4,14 +4,14 @@ import {cacheExchange} from '@urql/exchange-graphcache'
 import { defaultExchanges, subscriptionExchange } from 'urql';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 
-
-
 // const subscriptionClient = new SubscriptionClient('ws://localhost:4000/subscriptions', { reconnect: true});
 
 // const ws = new WebSocket('ws://localhost:3000/ws')
 
+const __prod__ = process.env.NODE_ENV === "production"
+
 const subscriptionClient = process.browser ? new SubscriptionClient(
-  "ws://localhost:4000/subscriptions",
+  __prod__ ? process.env.WS_HOST_PROD : process.env.WS_HOST_DEV,
   {
     reconnect: true,
     timeout: 30000,
@@ -51,5 +51,6 @@ function MyApp({ Component, pageProps }) {
     </Provider>
   )
 }
+
 
 export default MyApp
