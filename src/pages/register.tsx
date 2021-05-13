@@ -34,10 +34,10 @@ const Register: React.FC<registerProps> = ({}) => {
 						{ ({values, handleChange, isSubmitting}) => (
 								<Form>
 									<Box>
-										<InputField name='username' placeholder='username' label='Username'/>
+										<InputField color="white" name='username' placeholder='username' label='Username'/>
 									</Box>
 									<Box mt={5}>
-										<InputField type ='password' name='password' placeholder='password' label='Password'/>
+										<InputField color="white" type ='password' name='password' placeholder='password' label='Password'/>
 									</Box>
 									<Button mt={5} type='submit' colorScheme="blue" isLoading={isSubmitting}>Register</Button>
 								</Form>
