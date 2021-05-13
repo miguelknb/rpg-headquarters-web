@@ -23,7 +23,7 @@ const subscriptionClient = process.browser ? new SubscriptionClient(
 import theme from '../theme'
 
 const client = new Client({
-  url: "http://localhost:4000/graphql",
+  url: __prod__ ?  process.env.HTTP_HOST_PROD : process.env.HTTP_HOST_DEV,
   fetchOptions : {
     credentials: "include",
   },
