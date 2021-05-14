@@ -12,7 +12,7 @@ const __prod__ = process.env.NODE_ENV === "production"
 
 const subscriptionClient = process.browser ? new SubscriptionClient(
   // "ws://167.99.127.50:4000/subscriptions",
-  "ws://localhost:4000/subscriptions",
+  "ws://tatubola-rpg.xyz:4000/subscriptions",
   {
     reconnect: true,
     timeout: 30000,
