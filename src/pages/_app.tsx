@@ -11,7 +11,8 @@ import { SubscriptionClient } from 'subscriptions-transport-ws';
 const __prod__ = process.env.NODE_ENV === "production"
 
 const subscriptionClient = process.browser ? new SubscriptionClient(
-  __prod__ ? process.env.WS_HOST_PROD : process.env.WS_HOST_DEV,
+  // "ws://167.99.127.50:4000/subscriptions",
+  "ws://localhost:4000/subscriptions",
   {
     reconnect: true,
     timeout: 30000,
@@ -23,7 +24,8 @@ const subscriptionClient = process.browser ? new SubscriptionClient(
 import theme from '../theme'
 
 const client = new Client({
-  url: __prod__ ?  process.env.HTTP_HOST_PROD : process.env.HTTP_HOST_DEV,
+  // url: "http://167.99.127.50:4000/graphql",
+  url: "http://localhost:4000/graphql",
   fetchOptions : {
     credentials: "include",
   },
