@@ -25,7 +25,7 @@ import theme from '../theme'
 
 const client = new Client({
   // url: "http://167.99.127.50:4000/graphql",
-  url: "http://localhost:4000/graphql",
+  url: "http://tatubola-rpg.xyz:4000/graphql",
   fetchOptions : {
     credentials: "include",
   },
