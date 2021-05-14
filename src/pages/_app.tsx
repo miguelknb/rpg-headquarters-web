@@ -38,7 +38,10 @@ const client = new Client({
 
 })
 
+console.log('Client Url: ', client.url)
+
 function MyApp({ Component, pageProps }) {
+  
   return (
     <Provider value={client}>
     <ChakraProvider resetCSS theme={theme}>
