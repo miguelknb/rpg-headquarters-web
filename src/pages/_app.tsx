@@ -8,8 +8,8 @@ import { SubscriptionClient } from 'subscriptions-transport-ws';
 const __prod__ = process.env.NODE_ENV === "production"
 
 const subscriptionClient = process.browser ? new SubscriptionClient(
-  "ws://localhost:4000/subscriptions",
-  // "ws://tatubola-rpg.xyz:4000/subscriptions",
+  // "ws://localhost:4000/subscriptions",  
+  "ws://tatubola-rpg.xyz:4000/subscriptions",
   // __prod__ ? process.env.HOST_PROD : process.env.HOST_DEV,
   {
     reconnect: true,
@@ -23,8 +23,8 @@ console.log(__prod__)
 import theme from '../theme'
 
 const client = new Client({
-  url: "http://localhost:4000/graphql",
-  // url: "http://tatubola-rpg.xyz:4000/graphql",
+  // url: "http://localhost:4000/graphql",
+  url: "http://tatubola-rpg.xyz:4000/graphql",
   // url: __prod__ ? process.env.HOST_PROD : process.env.HOST_DEV,
   fetchOptions : {
     credentials: "include",
