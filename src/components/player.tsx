@@ -18,6 +18,12 @@ import { useChangeHealthMutation, useChangeInsanityStatusMutation, useChangeSani
 
 const Player: React.FC<any> = ({ player }) => {
 
+  if (!player || player === null) {
+    return <Box>
+      <Text fontSize="3xl">Algo deu errado, aperte F5 ;)</Text>
+    </Box>
+  }
+
   const [sanity, setSanity] = useState(player.currentSanity);
   const [health, setHealth] = useState(player.currentHealth);
   const [inputType, setInputType] = useState('');

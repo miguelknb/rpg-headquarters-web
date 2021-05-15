@@ -4,15 +4,13 @@ import {cacheExchange} from '@urql/exchange-graphcache'
 import { defaultExchanges, subscriptionExchange } from 'urql';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 
-// const subscriptionClient = new SubscriptionClient('ws://localhost:4000/subscriptions', { reconnect: true});
-
-// const ws = new WebSocket('ws://localhost:3000/ws')
 
 const __prod__ = process.env.NODE_ENV === "production"
 
 const subscriptionClient = process.browser ? new SubscriptionClient(
-  // "ws://167.99.127.50:4000/subscriptions",
-  "ws://tatubola-rpg.xyz:4000/subscriptions",
+  "ws://localhost:4000/subscriptions",
+  // "ws://tatubola-rpg.xyz:4000/subscriptions",
+  // __prod__ ? process.env.HOST_PROD : process.env.HOST_DEV,
   {
     reconnect: true,
     timeout: 30000,
@@ -20,12 +18,14 @@ const subscriptionClient = process.browser ? new SubscriptionClient(
   // ws
 ) : null;
 
+console.log(__prod__)
 
 import theme from '../theme'
 
 const client = new Client({
-  // url: "http://167.99.127.50:4000/graphql",
-  url: "http://tatubola-rpg.xyz:4000/graphql",
+  url: "http://localhost:4000/graphql",
+  // url: "http://tatubola-rpg.xyz:4000/graphql",
+  // url: __prod__ ? process.env.HOST_PROD : process.env.HOST_DEV,
   fetchOptions : {
     credentials: "include",
   },
@@ -39,6 +39,7 @@ const client = new Client({
 })
 
 console.log('Client Url: ', client.url)
+console.log('Subscription Url: ', __prod__ ? process.env.WS_HOST_PROD : process.env.WS_HOST_DEV)
 
 function MyApp({ Component, pageProps }) {
   

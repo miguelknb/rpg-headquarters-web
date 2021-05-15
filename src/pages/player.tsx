@@ -10,7 +10,7 @@ import Layout from '../components/layoyut';
 
 const PlayerPage : React.FC<any> = ({}) => {
     
-    const [{ data, fetching }] = useMeQuery();
+    const [{ data, fetching, error }] = useMeQuery();
 
     if (fetching) {
         return (
@@ -18,7 +18,7 @@ const PlayerPage : React.FC<any> = ({}) => {
         )
     }
 
-    if (data) {    
+    if (data.me) {    
         return (
             <Layout>
                 <PlayerCard player={data.me}/>
@@ -26,9 +26,10 @@ const PlayerPage : React.FC<any> = ({}) => {
             ) 
     }
 
-    else {
+    if (!data.me || error) {
         const router = useRouter()
         router.push('/login')
+        return null;
     }
 }
 
