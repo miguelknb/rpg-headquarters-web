@@ -54,13 +54,15 @@ const Overlay: React.FC<OverlayPros> = ({ id }) => {
   </p> 
 
   if(res.data) {
-    startedFetching = true;
-    player= res.data.StatusChange
-    console.log(player)
+
+    if (res.data.StatusChange.id === id) {
+      startedFetching = true;
+      player= res.data.StatusChange
+      console.log(player)
+    }
   }
-  else {
-    if(!startedFetching) player = data.user;
-  }
+    
+  if(!startedFetching) player = data.user;
 
   return (
     <Flex direction={"column"} alignItems={"center"} p={4} m={"auto"} backgroundColor={"transparent"}>
