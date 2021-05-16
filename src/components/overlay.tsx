@@ -1,5 +1,5 @@
 import { Box, Flex, Text, Image } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useUserQuery } from "../generated/graphql";
 import { selectPlayerImage } from "../utils/selectPlayerImg";
 import Bar from "./bar";
@@ -40,11 +40,13 @@ const handleSubscription = (user, response) => {
 const Overlay: React.FC<OverlayPros> = ({ id }) => {
 
   let startedFetching = false;
+  
+  const  [started, setStarted] = useState(false);
 
-  let player;
+  let lastPlayerUpdate = useRef(null);
 
-  let [{ data, fetching, error }] = useUserQuery({ variables: { id: id } });
-
+  const [{ data, fetching, error }] = useUserQuery({ variables: { id: id } });
+  
   const [res] = useSubscription({ query: statusChange }, handleSubscription);
 
   if (fetching) return <p>Loading...</p>;
@@ -53,16 +55,20 @@ const Overlay: React.FC<OverlayPros> = ({ id }) => {
     Error {error};
   </p> 
 
+  if(!started && data) {
+    lastPlayerUpdate.current = data.user;
+  }
+
   if(res.data) {
+    if(!started) setStarted(true)
 
     if (res.data.StatusChange.id === id) {
-      startedFetching = true;
-      player= res.data.StatusChange
-      console.log(player)
+      lastPlayerUpdate.current = res.data.StatusChange;
+
     }
   }
-    
-  if(!startedFetching) player = data.user;
+
+  let player = lastPlayerUpdate.current;
 
   return (
     <Flex direction={"column"} alignItems={"center"} p={4} m={"auto"} backgroundColor={"transparent"}>
